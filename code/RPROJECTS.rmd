@@ -1,0 +1,37 @@
+```{r}
+library(ggplot2)
+
+thermal_distress <- c(0,0,0)
+input_data <- read.csv("o-ring-erosion-only.csv")
+#dim(input_data)
+#str(input)
+# GRAPH PLOT BETWWEN LAUNCH TEMPERATURE AND THERMAL DISTRESS
+ggplot(input_data, aes(x= Launch_temperature, y = thermal_distress)) + geom_point(size = 2.5, color="navy") + xlab("launch temp") + ylab("thermal distress") + ggtitle("Item Visibility vs Item Outlet Sales")
+# GRAPH PLOT BETWWEN PSI (LEAK CHECK PRESSURE) AND THERMAL DISTRESS
+ggplot(input_data, aes(x= psi, y = thermal_distress)) + geom_point(size = 2.5, color="navy") + xlab("PSI") + ylab("thermal distress") + ggtitle("Item Visibility vs Item Outlet Sales")
+# HERE DATA OF TRAIN IN USE TO FIND LINEAR REGRESSION EQUATION OF PREDICATION FILENAME = traintest.csv
+input_data2 <- read.csv("traintest2.csv")
+Y = input_data2$thermal_distress     #COLUMN OF THERMAL DISTRESS 
+x1 = input_data2$Launch_temperature  #COLUMN OF LANUCH TEMPERATURE
+x2 = input_data2$psi                 #COLUMN OF PSI LEAK CHEAK PRESSURE
+X <- cbind(x1,x2)                     #CBIND Is A FUNCTION USE TO MERG TWO DATA FRAME OF SAME NUMBER OF ROWS
+
+formula<-lm(Y~X)
+#LM IN LINEAR REGRESSION FUNCTION USE TO (LINEAR MODAL FUNCTION) IT USE TO CREATE SIMPLE LINEAR REGRESSION
+                                    #IN FORMULA WE GET AN LINEAR EQUATION FOR PREDICATION 
+x = readline("ENTER LAUNCH TEMPEARTURE") 
+x = as.integer(x)
+cat("NOW THE ASSUMPTION OF THERMAL DISTRESS IS")
+thermal_distress[1] = (x * (formula$coefficients[2])) + (50  * (formula$coefficients[3] )) + formula$coefficients[1]
+thermal_distress[2] = (x * (formula$coefficients[2])) + (100  * (formula$coefficients[3] )) + formula$coefficients[1]
+thermal_distress[3] = (x * (formula$coefficients[2])) + (200  * (formula$coefficients[3] ))+ formula$coefficients[1]
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 50 :-")
+print(thermal_distress[1])
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 100 :-")
+print(thermal_distress[2])
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 200 :-")
+print(thermal_distress[3])
+ 
+```
+
+

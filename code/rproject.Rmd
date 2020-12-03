@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+
+```
+```{r}
+thermal_distress <- c(0,0,0)
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```
+```{r}
+
+
+input_data <- read.csv("o-ring-erosion-only.csv")
+dim(input_data)
+str(input)
+
+
+str(input_data)
+summary(input_data)
+
+
+
+
+library(ggplot2)
+
+ggplot(input_data, aes(x= Launch_temperature, y = thermal_distress)) + geom_point(size = 2.5, color="navy") + xlab("launch temp") + ylab("thermal distress") + ggtitle("Item Visibility vs Item Outlet Sales")
+
+
+
+ggplot(input_data, aes(x= psi, y = thermal_distress)) + geom_point(size = 2.5, color="navy") + xlab("PSI") + ylab("thermal distress") + ggtitle("Item Visibility vs Item Outlet Sales")
+
+input_data2 <- read.csv("traintest2.csv")
+dim(input_data2)
+Y = input_data2$thermal_distress
+Y
+class(Y)
+x1 = input_data2$Launch_temperature
+x2 = input_data2$psi
+X<- cbind(x1,x2)
+formula<-lm(Y~X)
+summary(formula)
+x = readline("ENTER LAUNCH TEMPEARTURE")
+x = as.integer(x)
+
+#result = x * formula$coefficients[1] + y * formula$coefficients[2] + formula$coefficients[0]
+cat("NOW THE ASSUMPTION OF THERMAL DISTRESS IS")
+
+
+thermal_distress[1] = (x * (formula$coefficients[2])) + (50  * (formula$coefficients[3] )) + formula$coefficients[1]
+
+thermal_distress[2] = (x * (formula$coefficients[2])) + (100  * (formula$coefficients[3] )) + formula$coefficients[1]
+
+
+thermal_distress[3] = (x * (formula$coefficients[2])) + (200  * (formula$coefficients[3] ))+ formula$coefficients[1]
+
+
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 50 :-")
+print(thermal_distress[1])
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 100 :-")
+print(thermal_distress[2])
+cat("WHEN OVER LEAK CHECK PRESSURE (PSI) = 200 :-")
+print(thermal_distress[3])
+```
+
+
+
+
+
+```{r}
+
+ summary(formula)
+
+
+
+```
+
+
+
